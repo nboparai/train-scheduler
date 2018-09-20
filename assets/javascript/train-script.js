@@ -12,29 +12,46 @@ var config = {
   };
 firebase.initializeApp(config);
   var traindata = firebase.database().ref();
+ 
 //   Show user current time
   $("#currentTime").append(moment().format("hh:mm A"));
   
 // Button to add train
 $("#submit-train").on("click", function(){
     event.preventDefault();
+    $("#errMsg").text("");
     // grabs user input
     var trainName = $("#train-name").val().trim();
     var trainDestin = $("#destination").val().trim();
     // convert to UNIX
-    var trainTime = moment($('#first-time').val().trim(),"HH:mm").subtract(10, "years").format("X");
+    var trainTime = moment($('#first-time').val().trim(),"HH:mm").format("X");
     var trainFreq=$("#frequency").val().trim();
     console.log(trainName, trainDestin, trainTime, trainFreq);
-
-    // create object to hold data
-    var newTrain={
-        name: trainName,
-        destination: trainDestin,
-        firstTrain: trainTime,
-        frequency: trainFreq,
+    if (trainTime == "Invalid date"){
+        console.error("Please enter time in military time");
+        $("#errMsg").text("Please enter time in military time");
+        return;
     }
-    // upload train data to firebase database
-    traindata.push(newTrain);
+    if (isNaN(trainFreq)){
+        console.warn("Please enter a valid number for frequency");
+        $("#errMsg").append("Please enter a valid number for frequency");
+        return;
+    }
+    if (trainName.length > 0 && trainDestin.length > 0 && trainTime.length > 0 && trainFreq.length > 0){
+        // create object to hold data
+        var newTrain={
+            name: trainName,
+            destination: trainDestin,
+            firstTrain: trainTime,
+            frequency: trainFreq,
+        }
+        // upload train data to firebase database
+        traindata.push(newTrain);
+    }
+    else {
+        $("#errMsg").append("Please complete all fields");
+        console.warn("Please complete all fields");
+        return;} 
     // clear input textboxes
     $("#train-name").val("");
     $("#destination").val("");

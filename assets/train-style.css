@@ -6,3 +6,29 @@
 .row{
     padding: 20px;
 }
+h3{
+    color: rgb(48, 83, 122);
+}
+h4{
+    padding: 10px;
+    color: blue;
+    font-weight: bold;
+    background-color: gainsboro;
+}
+#errMsg{
+    text-align: center;
+    color: red;
+    background-color: yellow;
+    font-weight: bold;
+}
+form{
+    font-weight: bold;
+}
+#currentTime{
+    font-weight: bold;
+    background-color:rgb(107, 103, 103);
+    color: antiquewhite;
+    margin: 50px;
+    align-content: center;
+
+}
